@@ -1,0 +1,4 @@
+name: workshopCatalog
+displayName: CloudBees Days Workshop Template Catalog
+version: 1
+kind: pipeline-template-catalog

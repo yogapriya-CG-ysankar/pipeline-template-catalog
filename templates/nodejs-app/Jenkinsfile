@@ -1,5 +1,5 @@
 #!groovy
-library 'cd-accel'
+library 'cb-days'
 def testPodYaml = libraryResource 'podtemplates/nodejs-app/test-pod.yml'
 pipeline {
   agent none
