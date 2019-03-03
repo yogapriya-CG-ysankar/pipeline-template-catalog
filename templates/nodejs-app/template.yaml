@@ -21,4 +21,4 @@ multibranch:
       id: helloworld-nodejs
       credentialsId: ${githubCredentialId}
       repoOwner: ${repoOwner}
-      repository: helloworld-nodejs
+      repository: 'helloworld-nodejs'
