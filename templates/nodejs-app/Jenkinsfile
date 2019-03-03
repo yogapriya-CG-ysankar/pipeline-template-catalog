@@ -9,79 +9,46 @@ pipeline {
     preserveStashes(buildCount: 2)
   }
   stages {
-    stage('Tests') {
+    stage('Web Tests') {
+      agent {
+        kubernetes {
+          label 'nodejs-testcafe'
+          yaml testPodYaml
+        }
+      }
       when {
         beforeAgent true
         branch 'development'
       }
-      parallel {
-        stage('Web Tests') {
-          agent {
-            kubernetes {
-              label 'nodejs-testcafe'
-              yaml testPodYaml
+      stages {
+        stage('Nodejs Setup') {
+          steps {
+            checkout scm
+            defineProps('.nodejs-app', [npmPackages: 'express pug'])            
+            container('nodejs') {
+              sh """
+                npm i -S ${npmPackages}
+                node ./hello.js &
+              """
             }
-          }
-          stages {
-            stage('Nodejs Setup') {
-              steps {
-                checkout scm
-                defineProps('.nodejs-app', [npmPackages: 'express pug'])            
-                container('nodejs') {
-                  sh """
-                    npm i -S ${npmPackages}
-                    node ./hello.js &
-                  """
-                }
-              }   
-            }
-            stage('Testcafe') {
-              steps {
-                container('testcafe') {
-                  sh '/opt/testcafe/docker/testcafe-docker.sh "chromium --no-sandbox" tests/*.js -r xunit:res.xml'
-                }
-              }   
-            }
-          }  
-          post {
-            success {
-              stash name: 'app', includes: '*.js, public/**, views/*, Dockerfile'
-            }
-            always {
-              junit 'res.xml'
-            }
-          } 
+          }   
         }
-        stage('Load Test') {
-          agent {
-            kubernetes {
-              label 'nodejs-ab'
-              yaml loadTestPodYaml
+        stage('Testcafe') {
+          steps {
+            container('testcafe') {
+              sh '/opt/testcafe/docker/testcafe-docker.sh "chromium --no-sandbox" tests/*.js -r xunit:res.xml'
             }
-          }
-          stages {
-            stage('Nodejs Setup') {
-              steps {
-                checkout scm
-                container('nodejs') {
-                  sh '''
-                    npm install express
-                    npm install pug --save
-                    node ./hello.js &
-                  '''
-                }
-              }   
-            }
-            stage('Apache Benchmark') {  
-              steps {
-                container('apache-benchmark') {
-                  sh 'ab -n 10 -c 4 -s 5 http://localhost:8080/'
-                }
-              }
-            }
-          }
+          }   
         }
-      }
+      }  
+      post {
+        success {
+          stash name: 'app', includes: '*.js, public/**, views/*, Dockerfile'
+        }
+        always {
+          junit 'res.xml'
+        }
+      } 
     }
     stage('Build and Push Image') {
       when {
