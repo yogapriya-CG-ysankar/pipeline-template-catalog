@@ -8,6 +8,9 @@ pipeline {
     skipDefaultCheckout true
     preserveStashes(buildCount: 2)
   }
+  environment {
+    repoOwner = "${repoOwner}"
+  }
   stages {
     stage('Web Tests') {
       agent {
