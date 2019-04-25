@@ -55,8 +55,7 @@ pipeline {
         beforeAgent true
         branch 'master'
       }
-      steps {
-        defineProps('.nodejs-app', [npmPackages: 'express pug'])   
+      steps {  
         dockerBuildPush(env.IMAGE_NAME, env.IMAGE_TAG) {
           unstash 'app'
         }
