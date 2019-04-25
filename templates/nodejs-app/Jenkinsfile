@@ -80,7 +80,6 @@ pipeline {
         submitterParameter "APPROVER"
       }
       steps {
-        imageNameTag()
         kubeDeploy(env.IMAGE_NAME, env.IMAGE_TAG)
       }
     }   
