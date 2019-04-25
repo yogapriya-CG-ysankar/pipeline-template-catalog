@@ -53,9 +53,10 @@ pipeline {
     stage('Build and Push Image') {
       when {
         beforeAgent true
-        branch 'development'
+        branch 'master'
       }
       steps {
+        defineProps('.nodejs-app', [npmPackages: 'express pug'])   
         dockerBuildPush(env.IMAGE_NAME, env.IMAGE_TAG) {
           unstash 'app'
         }
