@@ -9,7 +9,7 @@ pipeline {
     preserveStashes(buildCount: 2)
   }
   environment {
-    repoOwner = ${repoOwner}
+    repoOwner = "${repoOwner}"
   }
   stages {
     stage('Web Tests') {
