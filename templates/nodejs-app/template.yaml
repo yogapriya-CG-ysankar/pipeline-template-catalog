@@ -26,4 +26,4 @@ multibranch:
       credentialsId: ${githubCredentialId}
       repoOwner: ${repoOwner}
       repository: 'helloworld-nodejs'
-    markerFile: .nodejs-app
+  markerFile: .nodejs-app
