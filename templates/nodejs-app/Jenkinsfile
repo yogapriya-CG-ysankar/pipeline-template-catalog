@@ -75,11 +75,11 @@ pipeline {
       options {
         timeout(time: 60, unit: 'SECONDS') 
       }
-      input {
-        message "Should we deploy?"
-        submitterParameter "APPROVER"
-      }
       steps {
+        input {
+          message "Should we deploy?"
+          submitterParameter "APPROVER"
+        }
         kubeDeploy(env.IMAGE_NAME, env.IMAGE_TAG)
       }
     }   
