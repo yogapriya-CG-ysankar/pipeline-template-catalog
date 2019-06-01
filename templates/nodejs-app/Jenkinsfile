@@ -58,7 +58,7 @@ pipeline {
       }
       steps {  
         echo "${repoOwner}"
-        kanikoBuildPush(env.IMAGE_NAME, env.IMAGE_TAG, ${gcpProject}) {
+        kanikoBuildPush(env.IMAGE_NAME, env.IMAGE_TAG, "${gcpProject}") {
           checkout scm
         }
       }
