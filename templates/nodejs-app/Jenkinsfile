@@ -79,7 +79,7 @@ pipeline {
       }
       steps {
         input(message: "Should we deploy?", ok: "Deploy", submitterParameter: "APPROVER")
-        kubeDeploy(env.IMAGE_NAME, env.IMAGE_TAG, "${repoOwner}")
+        kubeDeploy(env.IMAGE_NAME, env.IMAGE_TAG, "${githubCredentialId}", "${repoOwner}")
       }
     }   
   }
