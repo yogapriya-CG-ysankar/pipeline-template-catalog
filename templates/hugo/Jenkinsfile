@@ -26,8 +26,8 @@ pipeline {
       stages {
         stage("Build site") {
           steps {
+            checkout scm
             container('hugo') {
-              checkout scm
               sh 'ls'
               sh 'echo ${env.BRANCH_NAME}'
               sh 'hugo -b http://${env.BRANCH_NAME}.blog.cb-sa.io'
