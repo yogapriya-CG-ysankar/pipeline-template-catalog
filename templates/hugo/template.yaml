@@ -1,0 +1,31 @@
+version: 1
+type: pipeline-template
+name: Hugo Pipeline
+templateType: MULTIBRANCH
+description: Build and deploy your hugo application.
+parameters:
+  - name: projectName
+    type: string
+    displayName: Project Name
+  - name: repoOwner
+    type: string
+    displayName: Repository Owner
+  - name: repo
+    type: string
+    displayName: Repository
+  - name: githubCredentialId
+    displayName: GitHub Credential ID
+    type: CREDENTIALS
+    defaultValue: cbdays-github-token
+  - name: gcpProject
+    type: string
+    displayName: GCP Project
+    defaultValue: core-workshop
+multibranch:
+  branchSource:
+    github:
+      id: ${projectName}
+      credentialsId: ${githubCredentialId}
+      repoOwner: ${repoOwner}
+      repository: '${repo}'
+  markerFile: .hugo
