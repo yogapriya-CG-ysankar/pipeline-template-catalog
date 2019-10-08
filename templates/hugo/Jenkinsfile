@@ -41,7 +41,7 @@ pipeline {
                 unstash "public"
               }
               sh 'ls'
-              sh 'ls public'
+              sh 'ls public/*'
             }
           }
         }
