@@ -29,6 +29,7 @@ pipeline {
             checkout scm
             container('hugo') {
               sh 'hugo -b http://${BRANCH_NAME}.blog.cb-sa.io'
+              sh 'ls public/*'
               stash name: "public", includes: "public/*"
             }
           }
