@@ -28,9 +28,7 @@ pipeline {
           steps {
             checkout scm
             container('hugo') {
-              sh 'env'
-              sh 'echo ${BRANCH_NAME}'
-              sh 'hugo -b http://${env.BRANCH_NAME}.blog.cb-sa.io'
+              sh 'hugo -b http://${BRANCH_NAME}.blog.cb-sa.io'
               stash name: "public", includes: "public/*"
             }
           }
