@@ -29,7 +29,6 @@ pipeline {
             checkout scm
             container('hugo') {
               sh 'env'
-              env
               sh 'echo ${env.BRANCH_NAME}'
               sh 'hugo -b http://${env.BRANCH_NAME}.blog.cb-sa.io'
               stash name: "public", includes: "public/*"
