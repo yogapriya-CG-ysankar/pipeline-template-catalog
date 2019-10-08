@@ -40,6 +40,8 @@ pipeline {
               dir("public") {
                 unstash "public"
               }
+              sh 'ls'
+              sh 'ls public'
             }
           }
         }
