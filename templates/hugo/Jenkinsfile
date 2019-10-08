@@ -30,13 +30,12 @@ pipeline {
             container('hugo') {
               sh 'hugo -b http://${BRANCH_NAME}.blog.cb-sa.io'
               stash name: "public", includes: "public/*"
-              echo "${IMAGE_NAME}"
             }
           }
         }
         stage("Build and push image") {
           steps {
-            kanikoBuildPushGeneric(env.IMAGE_NAME, env.IMAGE_TAG, "${gcpProject}"){
+            kanikoBuildPushGeneric("blog", "v1.0.0", "${gcpProject}"){
               checkout scm
               dir("public") {
                 unstash "public"
