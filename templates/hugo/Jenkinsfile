@@ -51,7 +51,7 @@ pipeline {
           }
           steps {
             container('gcp-sdk') {
-              sh "gcloud beta run deploy ${projectName}-${BRANCH_NAME.toLowerCase()} --image gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME.toLowerCase()} --allow-unauthenticated --platform managed --region us-central1"
+              sh "gcloud beta run deploy ${projectName}-${BRANCH_NAME.toLowerCase()} --image gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME.toLowerCase()} --allow-unauthenticated --platform managed --region ${gcpRegion}"
             }
           }
         }
@@ -95,9 +95,7 @@ pipeline {
           }
           steps {
             container('gcp-sdk') {
-              sh "gcloud beta run deploy ${projectName} --image gcr.io/${gcpProject}/${projectName}:master-${env.BUILD_NUMBER} --allow-unauthenticated --platform managed --region us-central1"
-              sh "gcloud beta run domain-mappings create --service ${projectName} \
-   --domain ${targetDomain} --platform managed --region us-central1"
+              sh "gcloud beta run deploy ${projectName} --image gcr.io/${gcpProject}/${projectName}:master-${env.BUILD_NUMBER} --allow-unauthenticated --platform managed --region ${gcpRegion}"
             }
           }
         }

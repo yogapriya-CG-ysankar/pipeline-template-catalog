@@ -21,9 +21,10 @@ parameters:
     type: string
     displayName: GCP Project
     defaultValue: core-workshop
-  - name: targetDomain
+  - name: gcpRegion
     type: string
-    displayName: Target Domain
+    displayName: GCP Region
+    defaultValue: us-central1
 multibranch:
   branchSource:
     github:
