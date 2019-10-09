@@ -96,6 +96,8 @@ pipeline {
           steps {
             container('gcp-sdk') {
               sh "gcloud beta run deploy blog --image gcr.io/${gcpProject}/${projectName}:master-${env.BUILD_NUMBER} --allow-unauthenticated --platform managed --region us-central1"
+              sh "gcloud beta run domain-mappings create --service blog \
+   --domain blog.cb-sa.io"
             }
           }
         }
