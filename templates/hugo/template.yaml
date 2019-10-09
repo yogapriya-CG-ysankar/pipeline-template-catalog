@@ -21,6 +21,9 @@ parameters:
     type: string
     displayName: GCP Project
     defaultValue: core-workshop
+  - name: targetDomain
+    type: string
+    displayName: Target Domain
 multibranch:
   branchSource:
     github:
