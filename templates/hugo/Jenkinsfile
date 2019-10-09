@@ -48,7 +48,6 @@ pipeline {
           agent {
             kubernetes {
               label 'cloud-run'
-              cloud 'cloud-run'
               yaml cloudRunYaml
             }
           }
