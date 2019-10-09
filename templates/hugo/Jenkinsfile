@@ -41,6 +41,8 @@ pipeline {
               dir("public") {
                 unstash "public"
               }
+              sh 'pwd'
+              sh 'ls'
             }
           }
         }
