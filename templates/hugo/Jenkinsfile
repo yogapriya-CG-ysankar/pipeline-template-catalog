@@ -30,7 +30,7 @@ pipeline {
             checkout scm
             container('hugo') {
               sh "hugo"
-              stash name: "public", includes: "public/*/*"
+              stash name: "public", includes: "public/**"
             }
           }
         }
