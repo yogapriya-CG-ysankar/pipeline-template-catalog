@@ -1,5 +1,6 @@
 library 'cb-days@master'
 def hugoPodYaml = libraryResource 'podtemplates/hugo/pod.yml'
+def cloudRunYaml = libraryResource 'podtemplates/cloud-run.yml'
 pipeline {
   agent none
   options { 
@@ -48,7 +49,7 @@ pipeline {
             kubernetes {
               label 'cloud-run'
               cloud 'cloud-run'
-              yamlFile podtemplates/cloud-run.yml
+              yaml cloudRunYaml
             }
           }
           steps {
