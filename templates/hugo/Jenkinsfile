@@ -36,7 +36,7 @@ pipeline {
         }
         stage("Build and push image") {
           steps {
-            kanikoBuildPushGeneric("${projectName}", "${BRANCH_NAME}", "${gcpProject}"){
+            kanikoBuildPushGeneric("${projectName}", "${BRANCH_NAME.toLowerCase()}", "${gcpProject}"){
               checkout scm
               dir("public") {
                 unstash "public"
@@ -53,7 +53,7 @@ pipeline {
           }
           steps {
             container('gcp-sdk') {
-              sh "gcloud beta run deploy blog-${BRANCH_NAME} --image gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME} --allow-unauthenticated --platform managed --region us-central1"
+              sh "gcloud beta run deploy blog-${BRANCH_NAME} --image gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME.toLowerCase()} --allow-unauthenticated --platform managed --region us-central1"
             }
           }
         }
