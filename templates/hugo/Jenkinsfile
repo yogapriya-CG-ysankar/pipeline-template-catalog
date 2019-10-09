@@ -38,11 +38,7 @@ pipeline {
           steps {
             kanikoBuildPushGeneric("${projectName}", "${BRANCH_NAME.toLowerCase()}", "${gcpProject}"){
               checkout scm
-              dir("public") {
-                unstash "public"
-              }
-              sh 'pwd'
-              sh 'ls'
+              unstash "public"
             }
           }
         }
