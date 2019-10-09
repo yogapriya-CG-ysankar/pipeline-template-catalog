@@ -74,7 +74,7 @@ pipeline {
             checkout scm
             container('hugo') {
               sh "hugo"
-              stash name: "public", includes: "public/*"
+              stash name: "public", includes: "public/**"
             }
           }
         }
@@ -82,9 +82,7 @@ pipeline {
           steps {
             kanikoBuildPushGeneric("${projectName}", "master-${env.BUILD_NUMBER}", "${gcpProject}"){
               checkout scm
-              dir("public") {
-                unstash "public"
-              }
+              unstash "public"
             }
           }
         }
