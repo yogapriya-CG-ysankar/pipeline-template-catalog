@@ -29,7 +29,7 @@ pipeline {
           steps {
             checkout scm
             container('hugo') {
-              sh 'hugo -b http://${BRANCH_NAME}.blog.cb-sa.io'
+              sh 'hugo -b http://blog-${BRANCH_NAME.toLowerCase()}.cb-sa.io'
               stash name: "public", includes: "public/*"
             }
           }
@@ -53,7 +53,7 @@ pipeline {
           }
           steps {
             container('gcp-sdk') {
-              sh "gcloud beta run deploy blog-${BRANCH_NAME} --image gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME.toLowerCase()} --allow-unauthenticated --platform managed --region us-central1"
+              sh "gcloud beta run deploy blog-${BRANCH_NAME.toLowerCase()} --image gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME.toLowerCase()} --allow-unauthenticated --platform managed --region us-central1"
             }
           }
         }
