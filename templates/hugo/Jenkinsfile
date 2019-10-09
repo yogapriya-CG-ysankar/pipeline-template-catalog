@@ -59,35 +59,51 @@ pipeline {
         }
       }
     }
-    // stage('Build and Push Image') {
-    //   when {
-    //     beforeAgent true
-    //     branch 'master'
-    //   }
-    //   steps {  
-    //     echo "${repoOwner}"
-    //     kanikoBuildPush(env.IMAGE_NAME, env.IMAGE_TAG, "${gcpProject}") {
-    //       checkout scm
-    //     }
-    //   }
-    //   post {
-    //     success {
-    //       echo "${JOB_NAME} pipeline job is awaiting approval at: ${RUN_DISPLAY_URL}"
-    //     }
-    //   }
-    // }
-    // stage('Deploy') {
-    //   when {
-    //     beforeAgent true
-    //     branch 'master'
-    //   }
-    //   options {
-    //     timeout(time: 90, unit: 'SECONDS') 
-    //   }
-    //   steps {
-    //     input(message: "Should we deploy?", ok: "Deploy", submitterParameter: "APPROVER")
-    //     kubeDeploy(env.IMAGE_NAME, env.IMAGE_TAG, "${githubCredentialId}", "${repoOwner}")
-    //   }
-    // }   
+    stage('Master build & deploy') {
+      agent {
+        kubernetes {
+          label 'hugo-builder'
+          yaml hugoPodYaml
+        }
+      }
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      stages {
+        stage("Build site") {
+          steps {
+            checkout scm
+            container('hugo') {
+              sh "hugo -b http://blog.cb-sa.io"
+              stash name: "public", includes: "public/*"
+            }
+          }
+        }
+        stage("Build and push image") {
+          steps {
+            kanikoBuildPushGeneric("${projectName}", "master-${env.BUILD_NUMBER}", "${gcpProject}"){
+              checkout scm
+              dir("public") {
+                unstash "public"
+              }
+            }
+          }
+        }
+        stage("Deploy to preview env") {
+          agent {
+            kubernetes {
+              label 'cloud-run'
+              yaml cloudRunYaml
+            }
+          }
+          steps {
+            container('gcp-sdk') {
+              sh "gcloud beta run deploy blog --image gcr.io/${gcpProject}/${projectName}:master-${env.BUILD_NUMBER} --allow-unauthenticated --platform managed --region us-central1"
+            }
+          }
+        }
+      }
+    }   
   }
 }
