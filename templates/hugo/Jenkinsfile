@@ -13,7 +13,7 @@ pipeline {
     credId = "${githubCredentialId}"
   }
   triggers {
-    eventTrigger jmespathQuery("action=='closed'&&pull_request.repo.full_name='${repoOwner}/${repo}'")
+    eventTrigger jmespathQuery("action=='closed'&&pull_request.head.repo.full_name='${repoOwner}/${repo}'")
   }
   stages {
     stage('Preview environment') {
