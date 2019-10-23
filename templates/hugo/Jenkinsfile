@@ -12,9 +12,6 @@ pipeline {
     repoOwner = "${repoOwner}"
     credId = "${githubCredentialId}"
   }
-  triggers {
-    eventTrigger jmespathQuery("action=='closed'&&pull_request.head.repo.full_name='${repoOwner}/${repo}'")
-  }
   stages {
     stage('Preview environment') {
       agent {
@@ -46,16 +43,8 @@ pipeline {
           }
         }
         stage("Deploy to preview env") {
-          agent {
-            kubernetes {
-              label 'cloud-run'
-              yaml cloudRunYaml
-            }
-          }
           steps {
-            container('gcp-sdk') {
-              sh "gcloud beta run deploy ${projectName}-${BRANCH_NAME.toLowerCase()} --image gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME.toLowerCase()} --allow-unauthenticated --platform managed --region ${gcpRegion}"
-            }
+            cloudRunDeploy(serviceName="${projectName}-${BRANCH_NAME.toLowerCase()}", image="gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME.toLowerCase()}", deployType="managed", region="${gcpRegion}")
           }
         }
       }
@@ -90,16 +79,8 @@ pipeline {
           }
         }
         stage("Deploy to preview env") {
-          agent {
-            kubernetes {
-              label 'cloud-run'
-              yaml cloudRunYaml
-            }
-          }
           steps {
-            container('gcp-sdk') {
-              sh "gcloud beta run deploy ${projectName} --image gcr.io/${gcpProject}/${projectName}:master-${env.BUILD_NUMBER} --allow-unauthenticated --platform managed --region ${gcpRegion}"
-            }
+            cloudRunDeploy(serviceName="${projectName}", image="gcr.io/${gcpProject}/${projectName}:master-${env.BUILD_NUMBER}", deployType="managed", region="${gcpRegion}")
           }
         }
       }
