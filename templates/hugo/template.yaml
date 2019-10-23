@@ -21,20 +21,34 @@ parameters:
     type: string
     displayName: GCP Project
     defaultValue: core-workshop
-  - name: gcpRegion
+  - name: gcpRegionPR
     type: string
-    displayName: GCP Region
+    displayName: PR GCP Region
     defaultValue: us-central1
-  - name: deployType
+  - name: deployTypePR
     type: string
-    displayName: Deploy Type (managed/gke/vmware)
+    displayName: PR Deploy Type (managed/gke/vmware)
     defaultValue: managed
-  - name: clusterName
+  - name: clusterNamePR
     type: string
-    displayName: Cluster Name (only for GKE deploy)
-  - name: namespace
+    displayName: PR Cluster Name (only for GKE deploy)
+  - name: namespacePR
     type: string
-    displayName: Namespace (for gke/vmware)
+    displayName: PR Namespace (for gke/vmware)
+  - name: gcpRegionMaster
+    type: string
+    displayName: Master GCP Region
+    defaultValue: us-central1
+  - name: deployTypeMaster
+    type: string
+    displayName: Master Deploy Type (managed/gke/vmware)
+    defaultValue: managed
+  - name: clusterNameMaster
+    type: string
+    displayName: Master deploy Cluster Name (only for GKE deploy)
+  - name: namespaceMaster
+    type: string
+    displayName: Master deploy namespace(for gke/vmware)
 multibranch:
   branchSource:
     github:
