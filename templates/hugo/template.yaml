@@ -25,6 +25,13 @@ parameters:
     type: string
     displayName: GCP Region
     defaultValue: us-central1
+  - name: deployType
+    type: string
+    displayName: Deploy Type (managed/gke/vmware)
+    defaultValue: managed
+  - name: clusterName
+    type: string
+    displayName: Cluster Name (only for GKE deploy)
 multibranch:
   branchSource:
     github:

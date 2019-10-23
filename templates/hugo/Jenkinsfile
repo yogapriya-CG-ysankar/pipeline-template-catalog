@@ -44,7 +44,7 @@ pipeline {
         }
         stage("Deploy to preview env") {
           steps {
-            cloudRunDeploy(serviceName: "${projectName}-${BRANCH_NAME.toLowerCase()}", image: "gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME.toLowerCase()}", deployType: "managed", region: "${gcpRegion}")
+            cloudRunDeploy(serviceName: "${projectName}-${BRANCH_NAME.toLowerCase()}", image: "gcr.io/${gcpProject}/${projectName}:${BRANCH_NAME.toLowerCase()}", deployType: "${deployType}", region: "${gcpRegion}", clusterName: "${clusterName}")
           }
         }
       }
@@ -80,7 +80,7 @@ pipeline {
         }
         stage("Deploy to preview env") {
           steps {
-            cloudRunDeploy(serviceName: "${projectName}", image: "gcr.io/${gcpProject}/${projectName}:master-${env.BUILD_NUMBER}", deployType: "managed", region: "${gcpRegion}")
+            cloudRunDeploy(serviceName: "${projectName}", image: "gcr.io/${gcpProject}/${projectName}:master-${env.BUILD_NUMBER}", deployType: "${deployType}", region: "${gcpRegion}", clusterName: "${clusterName}")
           }
         }
       }
