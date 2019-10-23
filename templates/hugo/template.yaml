@@ -32,6 +32,9 @@ parameters:
   - name: clusterName
     type: string
     displayName: Cluster Name (only for GKE deploy)
+  - name: namespace
+    type: string
+    displayName: Namespace (for gke/vmware)
 multibranch:
   branchSource:
     github:
