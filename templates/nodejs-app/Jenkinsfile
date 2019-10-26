@@ -60,7 +60,7 @@ pipeline {
       steps {  
         echo "${repoOwner}"
         imageNameTag()
-        containerBuildPushGeneric(env.IMAGE_NAME, env.IMAGE_TAG, "${gcpProject}") {
+        containerBuildPushGeneric(env.IMAGE_NAME, "${repoOwner}-${env.IMAGE_TAG}", "${gcpProject}") {
           checkout scm
         }
       }
