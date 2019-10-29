@@ -1,4 +1,4 @@
-library 'cb-days@master'
+library 'cb-days@img'
 def hugoPodYaml = libraryResource 'podtemplates/hugo/pod.yml'
 def cloudRunYaml = libraryResource 'podtemplates/cloud-run.yml'
 pipeline {
@@ -36,7 +36,7 @@ pipeline {
         }
         stage("Build and push image") {
           steps {
-            kanikoBuildPushGeneric("${projectName}", "${BRANCH_NAME.toLowerCase()}", "${gcpProject}"){
+            containerBuildPushGeneric("${projectName}", "${BRANCH_NAME.toLowerCase()}", "${gcpProject}"){
               checkout scm
               unstash "public"
             }
@@ -72,7 +72,7 @@ pipeline {
         }
         stage("Build and push image") {
           steps {
-            kanikoBuildPushGeneric("${projectName}", "master-${env.BUILD_NUMBER}", "${gcpProject}"){
+            containerBuildPushGeneric("${projectName}", "master-${env.BUILD_NUMBER}", "${gcpProject}"){
               checkout scm
               unstash "public"
             }

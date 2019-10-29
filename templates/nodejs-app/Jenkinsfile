@@ -1,4 +1,4 @@
-library 'cb-days@master'
+library 'cb-days@img'
 def testPodYaml = libraryResource 'podtemplates/nodejs-app/web-test-pod.yml'
 def loadTestPodYaml = libraryResource 'podtemplates/nodejs-app/load-test-pod.yml'
 pipeline {
@@ -59,7 +59,7 @@ pipeline {
       }
       steps {  
         echo "${repoOwner}"
-        kanikoBuildPush(env.IMAGE_NAME, env.IMAGE_TAG, "${gcpProject}") {
+        containerBuildPushGeneric("helloworld-nodejs", "${repoOwner}-${env.BUILD_NUMBER}", "${gcpProject}") {
           checkout scm
         }
       }
