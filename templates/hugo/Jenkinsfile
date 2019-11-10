@@ -117,7 +117,7 @@ pipeline {
                     returnStdout: true)
               }
             }
-            echo "deployTypePR: ${deployTypePR}"
+            echo "gcpRegionPR: ${gcpRegionPR}"
             cloudRunDelete(serviceName: "${projectName}-pr-${prNumber}", deployType: "${deployTypePR}", region: "${gcpRegionPR}", clusterName: "${clusterNamePR}", namespace: "${namespacePR}")
           }
         }
