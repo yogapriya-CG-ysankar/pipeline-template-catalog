@@ -111,9 +111,11 @@ pipeline {
       stages {
         stage("Delete Cloud Run PR Service") {
           steps {
-            script {
-              prNumber = sh (script: "curl -u $JENKINS_CLI_USR:$JENKINS_CLI_PSW --silent ${BUILD_URL}api/json | jq -r '.actions[0].causes[0].event.number'", 
-                  returnStdout: true)
+            withCredentials([usernamePassword(credentialsId: 'cli-username-token', usernameVariable: 'JENKINS_CLI_USR', passwordVariable: 'JENKINS_CLI_PSW')]) {
+              script {
+                prNumber = sh (script: "curl -u $JENKINS_CLI_USR:$JENKINS_CLI_PSW --silent ${BUILD_URL}api/json | jq -r '.actions[0].causes[0].event.number'", 
+                    returnStdout: true)
+              }
             }
             cloudRunDlete(serviceName: "${projectName}-pr-${prNumber}", deployType: "${deployTypePR}", region: "${gcpRegionPR}", clusterName: "${clusterNamePR}", namespace: "${namespacePR}")
           }
