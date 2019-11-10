@@ -103,7 +103,10 @@ pipeline {
       }
       when {
         beforeAgent true
-        triggeredBy 'EventTriggerCause' 
+        allOf {
+          branch 'master'
+          triggeredBy 'EventTriggerCause' 
+        }
       }
       stages {
         stage("Delete Cloud Run PR Service") {
