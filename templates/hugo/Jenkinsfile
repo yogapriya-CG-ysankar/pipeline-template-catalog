@@ -26,7 +26,10 @@ pipeline {
       }
       when {
         beforeAgent true
-        branch 'pr-*'
+        allOf {
+          not { triggeredBy 'EventTriggerCause' }
+          branch 'pr-*'
+        }
       }
       stages {
         stage("Build site") {
@@ -62,7 +65,10 @@ pipeline {
       }
       when {
         beforeAgent true
-        branch 'master'
+        allOf {
+          not { triggeredBy 'EventTriggerCause' }
+          branch 'master'
+        }
       }
       stages {
         stage("Build site") {
