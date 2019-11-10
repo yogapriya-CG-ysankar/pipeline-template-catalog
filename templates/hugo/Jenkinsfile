@@ -1,12 +1,16 @@
 library 'cb-days@master'
 def hugoPodYaml = libraryResource 'podtemplates/hugo/pod.yml'
 def cloudRunYaml = libraryResource 'podtemplates/cloud-run.yml'
+def prNumber
 pipeline {
   agent none
   options { 
     buildDiscarder(logRotator(numToKeepStr: '2'))
     skipDefaultCheckout true
     preserveStashes(buildCount: 2)
+  }
+  triggers {
+    eventTrigger jmespathQuery("action=='closed' && repo.full_name=='cloudbees-days/blog'")
   }
   environment {
     repoOwner = "${repoOwner}"
@@ -84,6 +88,28 @@ pipeline {
           }
         }
       }
-    }   
+    }  
+    stage('PR Delete') {
+      agent {
+        kubernetes {
+          label 'default-jnlp'
+        }
+      }
+      when {
+        beforeAgent true
+        triggeredBy 'EventTriggerCause' 
+      }
+      stages {
+        stage("Delete Cloud Run PR Service") {
+          steps {
+            script {
+              prNumber = sh (script: "curl -u $JENKINS_CLI_USR:$JENKINS_CLI_PSW --silent ${BUILD_URL}api/json | jq -r '.actions[0].causes[0].event.number'", 
+                  returnStdout: true)
+            }
+            cloudRunDlete(serviceName: "${projectName}-pr-${prNumber}", deployType: "${deployTypePR}", region: "${gcpRegionPR}", clusterName: "${clusterNamePR}", namespace: "${namespacePR}")
+          }
+        }
+      }
+    }
   }
 }
