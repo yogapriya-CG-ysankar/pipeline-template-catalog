@@ -117,7 +117,7 @@ pipeline {
                     returnStdout: true)
               }
             }
-            cloudRunDlete(serviceName: "${projectName}-pr-${prNumber}", deployType: "${deployTypePR}", region: "${gcpRegionPR}", clusterName: "${clusterNamePR}", namespace: "${namespacePR}")
+            cloudRunDelete(serviceName: "${projectName}-pr-${prNumber}", deployType: "${deployTypePR}", region: "${gcpRegionPR}", clusterName: "${clusterNamePR}", namespace: "${namespacePR}")
           }
         }
       }
