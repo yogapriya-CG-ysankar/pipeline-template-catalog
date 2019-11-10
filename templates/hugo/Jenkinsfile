@@ -1,4 +1,4 @@
-library 'cb-days@img'
+library 'cb-days@master'
 def hugoPodYaml = libraryResource 'podtemplates/hugo/pod.yml'
 def cloudRunYaml = libraryResource 'podtemplates/cloud-run.yml'
 pipeline {
