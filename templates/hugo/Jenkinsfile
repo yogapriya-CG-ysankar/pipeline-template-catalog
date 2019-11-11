@@ -10,11 +10,11 @@ pipeline {
     preserveStashes(buildCount: 2)
   }
   triggers {
-    eventTrigger jmespathQuery("action=='closed' && repository.full_name=='${repoOwner}/${repoOwner}'")
+    eventTrigger jmespathQuery("action=='closed' && repository.full_name=='${repoOwner}/${repo}'")
   }
   environment {
     repoOwner = "${repoOwner}"
-    repo = "${repoOwner}"
+    repo = "${repo}"
     credId = "${githubCredentialId}"
   }
   stages {
