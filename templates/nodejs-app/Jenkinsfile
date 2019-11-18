@@ -59,7 +59,7 @@ pipeline {
       }
       steps {  
         echo "${repoOwner}"
-        containerBuildPushGeneric("helloworld-nodejs", "${repoOwner}-${env.BUILD_NUMBER}", "${gcpProject}") {
+        containerBuildPushGeneric("helloworld-nodejs", "${repoOwner.toLowerCase()}-${env.BUILD_NUMBER}", "${gcpProject}") {
           checkout scm
         }
       }
