@@ -1,4 +1,4 @@
-library 'cb-days@img'
+library 'cb-days@master'
 def testPodYaml = libraryResource 'podtemplates/nodejs-app/web-test-pod.yml'
 def loadTestPodYaml = libraryResource 'podtemplates/nodejs-app/load-test-pod.yml'
 pipeline {
