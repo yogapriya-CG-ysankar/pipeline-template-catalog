@@ -18,7 +18,7 @@ parameters:
   - name: gcpProject
     type: string
     displayName: GCP Project
-    defaultValue: core-workshop
+    defaultValue: preview-demo
 multibranch:
   branchSource:
     github:
