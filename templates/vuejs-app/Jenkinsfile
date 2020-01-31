@@ -1,0 +1,60 @@
+library 'cb-days@master'
+def testPodYaml = libraryResource 'podtemplates/vuejs/vuejs-test-pod.yml'
+pipeline {
+  agent none
+  options { 
+    buildDiscarder(logRotator(numToKeepStr: '2'))
+    skipDefaultCheckout true
+    preserveStashes(buildCount: 2)
+  }
+  environment {
+    repoOwner = "${repoOwner}"
+    credId = "${githubCredentialId}"
+  }
+  stages('VueJS Test and Build')
+  {
+    stage('VueJS Tests') {
+      agent {
+        kubernetes {
+          label 'nodejs'
+          yaml testPodYaml
+       }
+      }
+      steps {
+            checkout scm           
+            container('nodejs') {
+              sh '''
+                 yarn install
+                 yarn test:unit
+                 '''
+            }
+      } 
+    }
+    stage('Build and Push Image') {
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      steps { 
+        imgBuildNexus("microblog-frontend", "${repoOwner}", "${registry}")
+        {
+          checkout scm
+        }
+      }
+    }
+    stage('Deploy'){
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      // options {
+      //   timeout(time: 90, unit: 'SECONDS') 
+      // }
+      steps {
+        //input(message: "Should we deploy?", ok: "Deploy", submitterParameter: "APPROVER")
+        blogKubeDeploy(env.IMAGE_NAME, "${gcpProject}", "${githubCredentialId}", "${repoOwner}")
+      }
+    }  
+  }
+}
+
