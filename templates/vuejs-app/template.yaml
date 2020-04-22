@@ -21,7 +21,11 @@ parameters:
   - name: registry
     type: string
     displayName: Docker Registry
-    defaultValue: docker.cb-demos.io
+    defaultValue: docker.v1.k8s.tel
+  - name: deploymentDomain
+    type: string
+    displayName: Deployment Domain
+    defaultValue: v1.k8s.tel
 multibranch:
   branchSource:
     github:
