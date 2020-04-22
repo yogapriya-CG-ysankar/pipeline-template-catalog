@@ -36,7 +36,7 @@ pipeline {
         branch 'master'
       }
       steps { 
-        imgBuildNexus("microblog-frontend", "${repoOwner}", "${registry}")
+        imgBuildNexus("${repository}", "${repoOwner}", "${registry}")
         {
           checkout scm
         }
@@ -52,7 +52,7 @@ pipeline {
       // }
       steps {
         //input(message: "Should we deploy?", ok: "Deploy", submitterParameter: "APPROVER")
-        blogKubeDeploy(env.IMAGE_NAME, "${gcpProject}", "${githubCredentialId}", "${repoOwner}")
+        blogKubeDeploy("${repository}", "${repoOwner}", "${registry}", "${deploymentDomain}")
       }
     }  
   }
