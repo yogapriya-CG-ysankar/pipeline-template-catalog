@@ -38,7 +38,7 @@ pipeline {
         branch 'master'
       }
       steps { 
-        kanikoBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}") {
+        containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}") {
           unstash "checkout"
         }
       }
