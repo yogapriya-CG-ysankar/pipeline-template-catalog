@@ -18,6 +18,10 @@ parameters:
     type: string
     displayName: GCP Project
     defaultValue: cb-days-workshop
+  - name: deploymentDomain
+    type: string
+    displayName: Deployment Domain
+    defaultValue: v1.k8s.tel
 multibranch:
   branchSource:
     github:
