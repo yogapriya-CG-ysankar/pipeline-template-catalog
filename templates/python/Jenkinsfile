@@ -21,12 +21,15 @@ pipeline {
        }
       }
       steps {
-            checkout scm           
-            container('python3') {
-              sh '''
-                 pipenv install --system
-                 '''
-            }
+        checkout scm
+        gitShortCommit()
+        stash name: "checkout", includes: "**/**"
+        stash name: "k8s-deploy", includes: ".kubernetes/**"           
+        container('python3') {
+          sh '''
+             pipenv install --system
+             '''
+        }
       } 
     }
     stage('Build and Push Image') {
@@ -35,17 +38,23 @@ pipeline {
         branch 'master'
       }
       steps { 
-        imgBuildNexus("microblog-backend", "${repoOwner}", "${registry}")
+        containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}")
         {
-          checkout scm
+          unstash "checkout"
         }
       }
-      post {
-        success {
-          echo "${JOB_NAME} pipeline job is awaiting approval at: ${RUN_DISPLAY_URL}"
+    }
+    stage('Deploy') {
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      steps {
+        blogBackendKubeDeploy("${repository}", "${repoOwner}", "gcr.io/${gcpProject}", "${deploymentDomain}") {
+          unstash "k8s-deploy" 
         }
       }
-    }  
+    }
   }
 }
 
