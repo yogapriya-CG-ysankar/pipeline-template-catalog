@@ -44,7 +44,7 @@ pipeline {
         branch 'master'
       }
       steps { 
-        containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}")
+        containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}") {
           unstash "checkout"
         }
       }
