@@ -24,6 +24,7 @@ pipeline {
         checkout scm
         gitShortCommit()
         stash name: "checkout", includes: "**/**"
+        stash name: "k8s-deploy", includes: ".kubernetes/**"
         container('nodejs') {
           sh '''
              yarn install
@@ -54,7 +55,7 @@ pipeline {
       steps {
         //input(message: "Should we deploy?", ok: "Deploy", submitterParameter: "APPROVER")
         blogKubeDeploy("${repository}", "${repoOwner}", "${registry}", "${deploymentDomain}") {
-          unstash "checkout"
+          unstash "k8s-deploy"
         }
       }
     }  
