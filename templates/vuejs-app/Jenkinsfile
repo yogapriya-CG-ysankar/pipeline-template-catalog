@@ -21,13 +21,14 @@ pipeline {
        }
       }
       steps {
-            checkout scm           
-            container('nodejs') {
-              sh '''
-                 yarn install
-                 yarn test:unit
-                 '''
-            }
+        checkout scm
+        stash name: "checkout", includes: "**/**"
+        container('nodejs') {
+          sh '''
+             yarn install
+             yarn test:unit
+             '''
+        }
       } 
     }
     stage('Build and Push Image') {
@@ -36,9 +37,8 @@ pipeline {
         branch 'master'
       }
       steps { 
-        kanikoBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}")
-        {
-          checkout scm
+        kanikoBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}") {
+          unstash "checkout"
         }
       }
     }
@@ -52,7 +52,9 @@ pipeline {
       // }
       steps {
         //input(message: "Should we deploy?", ok: "Deploy", submitterParameter: "APPROVER")
-        blogKubeDeploy("${repository}", "${repoOwner}", "gcr.io/${gcpProject}", "${deploymentDomain}")
+        blogKubeDeploy("${repository}", "${repoOwner}", "gcr.io/${gcpProject}", "${deploymentDomain}") {
+          unstash "checkout"
+        }
       }
     }  
   }
