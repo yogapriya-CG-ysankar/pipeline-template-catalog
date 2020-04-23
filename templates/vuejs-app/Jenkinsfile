@@ -44,7 +44,7 @@ pipeline {
         branch 'master'
       }
       steps { 
-        imgBuildNexus("${repository}", "${repoOwner}", "${registry}") {
+        containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}")
           unstash "checkout"
         }
       }
