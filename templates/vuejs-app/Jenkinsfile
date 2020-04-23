@@ -31,7 +31,12 @@ pipeline {
              yarn test:unit
              '''
         }
-      } 
+      }
+      post {
+        always {
+          junit 'output/coverage/junit/junit.xml'
+        }
+      }
     }
     stage('Build and Push Image') {
       when {
