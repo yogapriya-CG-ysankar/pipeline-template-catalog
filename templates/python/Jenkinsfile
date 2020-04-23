@@ -19,10 +19,10 @@ pipeline {
         branch 'master'
       }
       steps {
-        gitShortCommit()
         containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}")
         {
           checkout scm
+          gitShortCommit()
           stash name: "k8s-deploy", includes: ".kubernetes/**"  
         }
       }
