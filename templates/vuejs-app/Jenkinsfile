@@ -38,7 +38,7 @@ pipeline {
         branch 'master'
       }
       steps { 
-        imgBuildNexus("${repository}", "${repoOwner}", "${registry}", "${gcpProject}") {
+        imgBuildNexus("${repository}", "${repoOwner}", "${registry}") {
           unstash "checkout"
         }
       }
