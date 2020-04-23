@@ -38,7 +38,7 @@ pipeline {
         branch 'master'
       }
       steps { 
-        containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}") {
+        imgBuildNexus("${repository}", "${repoOwner}", "${registry}", "${gcpProject}") {
           unstash "checkout"
         }
       }
@@ -53,7 +53,7 @@ pipeline {
       // }
       steps {
         //input(message: "Should we deploy?", ok: "Deploy", submitterParameter: "APPROVER")
-        blogKubeDeploy("${repository}", "${repoOwner}", "gcr.io/${gcpProject}", "${deploymentDomain}") {
+        blogKubeDeploy("${repository}", "${repoOwner}", "${registry}", "${deploymentDomain}") {
           unstash "checkout"
         }
       }
