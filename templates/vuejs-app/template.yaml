@@ -17,7 +17,7 @@ parameters:
   - name: gcpProject
     type: string
     displayName: GCP Project
-    defaultValue: core-workshop
+    defaultValue: cb-days-workshop
   - name: registry
     type: string
     displayName: Docker Registry
