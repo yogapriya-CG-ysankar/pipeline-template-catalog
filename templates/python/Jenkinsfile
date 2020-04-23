@@ -13,39 +13,31 @@ pipeline {
   }
   stages('Python Test and Build')
   {
-    stage('Python Tests') {
-      agent {
-        kubernetes {
-          label 'python'
-          yaml testPodYaml
-       }
-      }
-      steps {
-            checkout scm           
-            container('python3') {
-              sh '''
-                 pipenv install --system
-                 '''
-            }
-      } 
-    }
     stage('Build and Push Image') {
       when {
         beforeAgent true
         branch 'master'
       }
-      steps { 
-        imgBuildNexus("microblog-backend", "${repoOwner}", "${registry}")
+      steps {
+        containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}")
         {
           checkout scm
+          gitShortCommit()
+          stash name: "k8s-deploy", includes: ".kubernetes/**"  
         }
       }
-      post {
-        success {
-          echo "${JOB_NAME} pipeline job is awaiting approval at: ${RUN_DISPLAY_URL}"
+    }
+    stage('Deploy') {
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      steps {
+        blogBackendKubeDeploy("${repository}", "${repoOwner}", "gcr.io/${gcpProject}", "${deploymentDomain}") {
+          unstash "k8s-deploy" 
         }
       }
-    }  
+    }
   }
 }
 

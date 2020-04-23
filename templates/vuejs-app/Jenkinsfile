@@ -21,14 +21,22 @@ pipeline {
        }
       }
       steps {
-            checkout scm           
-            container('nodejs') {
-              sh '''
-                 yarn install
-                 yarn test:unit
-                 '''
-            }
+        checkout scm
+        gitShortCommit()
+        stash name: "checkout", includes: "**/**"
+        stash name: "k8s-deploy", includes: ".kubernetes/**"
+        container('nodejs') {
+          sh '''
+             yarn install
+             yarn test:unit
+             '''
+        }
       } 
+      post {
+        always {
+          junit 'output/coverage/junit/junit.xml'
+        }
+      }
     }
     stage('Build and Push Image') {
       when {
@@ -36,9 +44,8 @@ pipeline {
         branch 'master'
       }
       steps { 
-        imgBuildNexus("microblog-frontend", "${repoOwner}", "${registry}")
-        {
-          checkout scm
+        containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}") {
+          unstash "checkout"
         }
       }
     }
@@ -52,7 +59,9 @@ pipeline {
       // }
       steps {
         //input(message: "Should we deploy?", ok: "Deploy", submitterParameter: "APPROVER")
-        blogKubeDeploy(env.IMAGE_NAME, "${gcpProject}", "${githubCredentialId}", "${repoOwner}")
+        blogKubeDeploy("${repository}", "${repoOwner}", "gcr.io/${gcpProject}", "${deploymentDomain}") {
+          unstash "k8s-deploy"
+        }
       }
     }  
   }

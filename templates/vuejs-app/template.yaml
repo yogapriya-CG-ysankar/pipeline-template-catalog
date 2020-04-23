@@ -17,11 +17,11 @@ parameters:
   - name: gcpProject
     type: string
     displayName: GCP Project
-    defaultValue: core-workshop
-  - name: registry
+    defaultValue: cb-days-workshop
+  - name: deploymentDomain
     type: string
-    displayName: Docker Registry
-    defaultValue: docker.cb-demos.io
+    displayName: Deployment Domain
+    defaultValue: v1.k8s.tel
 multibranch:
   branchSource:
     github:
