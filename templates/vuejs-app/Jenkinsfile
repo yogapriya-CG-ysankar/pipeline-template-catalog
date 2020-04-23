@@ -22,6 +22,7 @@ pipeline {
       }
       steps {
         checkout scm
+        gitShortCommit()
         stash name: "checkout", includes: "**/**"
         container('nodejs') {
           sh '''
