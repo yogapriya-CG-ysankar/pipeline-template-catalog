@@ -27,7 +27,7 @@ pipeline {
         stash name: "k8s-deploy", includes: ".kubernetes/**"           
         container('python3') {
           sh '''
-             pipenv install --system
+             pipenv install --system --user
              '''
         }
       } 
