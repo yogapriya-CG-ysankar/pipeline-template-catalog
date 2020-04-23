@@ -13,34 +13,17 @@ pipeline {
   }
   stages('Python Test and Build')
   {
-    stage('Python Tests') {
-      agent {
-        kubernetes {
-          label 'python'
-          yaml testPodYaml
-       }
-      }
-      steps {
-        checkout scm
-        gitShortCommit()
-        stash name: "checkout", includes: "**/**"
-        stash name: "k8s-deploy", includes: ".kubernetes/**"           
-        container('python3') {
-          sh '''
-             pipenv install --system --user
-             '''
-        }
-      } 
-    }
     stage('Build and Push Image') {
       when {
         beforeAgent true
         branch 'master'
       }
-      steps { 
+      steps {
+        gitShortCommit()
         containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}")
         {
-          unstash "checkout"
+          checkout scm
+          stash name: "k8s-deploy", includes: ".kubernetes/**"  
         }
       }
     }
