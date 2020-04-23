@@ -18,10 +18,6 @@ parameters:
     type: string
     displayName: GCP Project
     defaultValue: cb-days-workshop
-  - name: registry
-    type: string
-    displayName: Docker Registry
-    defaultValue: docker.v1.k8s.tel
   - name: deploymentDomain
     type: string
     displayName: Deployment Domain
