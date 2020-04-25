@@ -11,6 +11,7 @@ parameters:
   - name: repository
     type: string
     displayName: repository
+    defaultValue: microblog-frontend
   - name: githubCredentialId
     displayName: GitHub Credential ID
     type: CREDENTIALS
