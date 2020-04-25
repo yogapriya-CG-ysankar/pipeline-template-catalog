@@ -15,6 +15,7 @@ parameters:
   - name: githubCredentialId
     displayName: GitHub Credential ID
     type: CREDENTIALS
+    defaultValue: cbdays-github-username-pat
   - name: gcpProject
     type: string
     displayName: GCP Project
