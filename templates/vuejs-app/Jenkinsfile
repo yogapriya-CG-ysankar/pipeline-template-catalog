@@ -32,7 +32,6 @@ pipeline {
       post {
         always {
           junit 'output/coverage/junit/junit.xml'
-          sleep 20
         }
       }
     }
