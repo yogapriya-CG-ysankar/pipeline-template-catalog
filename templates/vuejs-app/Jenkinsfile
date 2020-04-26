@@ -20,14 +20,14 @@ pipeline {
       steps {
         checkout scm
         gitShortCommit()
-        stash name: "checkout", includes: "**/**"
-        stash name: "k8s-deploy", includes: ".kubernetes/**"
         container('nodejs') {
           sh '''
              yarn install
              yarn test:unit
              '''
         }
+        stash name: "install", includes: "**/**"
+        stash name: "k8s-deploy", includes: ".kubernetes/**"
       } 
       post {
         always {
@@ -42,7 +42,7 @@ pipeline {
       }
       steps { 
         containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}") {
-          unstash "checkout"
+          unstash "install"
         }
       }
     }
