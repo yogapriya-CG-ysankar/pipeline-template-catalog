@@ -17,17 +17,18 @@ pipeline {
       agent {
         label 'nodejs'
       }
+      when {
+        beforeAgent true
+        branch 'PR-*'
+      }
       steps {
         checkout scm
-        gitShortCommit()
         container('nodejs') {
           sh '''
              yarn install
              yarn test:unit
              '''
         }
-        stash name: "install", includes: "**/**"
-        stash name: "k8s-deploy", includes: ".kubernetes/**"
       } 
       post {
         always {
@@ -38,18 +39,20 @@ pipeline {
     stage('Build and Push Image') {
       when {
         beforeAgent true
-        branch 'master'
+        anyOf { branch 'master'; branch 'development' }
       }
       steps { 
         containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}") {
-          unstash "install"
+          checkout scm
+          gitShortCommit()
+          stash name: "k8s-deploy", includes: ".kubernetes/**"
         }
       }
     }
     stage('Deploy'){
       when {
         beforeAgent true
-        branch 'master'
+        anyOf { branch 'master'; branch 'development' }
       }
       // options {
       //   timeout(time: 90, unit: 'SECONDS') 
