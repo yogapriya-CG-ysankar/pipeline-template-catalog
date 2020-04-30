@@ -45,7 +45,6 @@ pipeline {
         containerBuildPushGeneric("${repoOwner}/${repository}", "latest", "${gcpProject}") {
           checkout scm
           gitShortCommit()
-          unstash "install"
         }
         stash name: "k8s-deploy", includes: ".kubernetes/**"
       }
