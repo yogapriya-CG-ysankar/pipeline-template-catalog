@@ -7,7 +7,7 @@ description: Test, Build and Deploy for Microblog Frontend application
 parameters:
   - name: repoOwner
     type: string
-    displayName: Repository Owner
+    displayName: GitHub Organization
   - name: repository
     type: string
     displayName: repository
