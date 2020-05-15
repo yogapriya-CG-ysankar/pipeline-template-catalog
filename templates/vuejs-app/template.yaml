@@ -1,4 +1,3 @@
-  
 version: 1
 type: pipeline-template
 name: VueJS
