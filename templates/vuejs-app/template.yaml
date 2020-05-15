@@ -23,7 +23,7 @@ parameters:
   - name: deploymentDomain
     type: string
     displayName: Deployment Domain
-    defaultValue: v1.k8s.tel
+    defaultValue: cbws.io
 multibranch:
   branchSource:
     github:
