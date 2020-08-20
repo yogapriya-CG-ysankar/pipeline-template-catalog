@@ -1,6 +1,5 @@
-library 'cb-days@master'
+library 'pipeline-library@master'
 def hugoPodYaml = libraryResource 'podtemplates/hugo/pod.yml'
-def cloudRunYaml = libraryResource 'podtemplates/cloud-run.yml'
 def prNumber
 pipeline {
   agent none
@@ -15,7 +14,6 @@ pipeline {
   environment {
     repoOwner = "${repoOwner}"
     repo = "${repo}"
-    credId = "${githubCredentialId}"
   }
   stages {
     stage('Preview environment') {
@@ -76,22 +74,16 @@ pipeline {
           steps {
             checkout scm
             container('hugo') {
-              sh "hugo"
+              sh "hugo --baseURL ${baseUrl} --contentDir ${contentDir}"
               stash name: "public", includes: "public/**"
             }
           }
         }
-        stage("Build and push image") {
+        stage("Deploy") {
           steps {
-            containerBuildPushGeneric("${projectName}", "master-${env.BUILD_NUMBER}", "${gcpProject}"){
-              checkout scm
+            gcpCloudStorageDeploy(bucketName: "${bucketName}") {
               unstash "public"
             }
-          }
-        }
-        stage("Deploy to preview env") {
-          steps {
-            cloudRunDeploy(serviceName: "${projectName}", image: "gcr.io/${gcpProject}/${projectName}:master-${env.BUILD_NUMBER}", deployType: "${deployTypeMaster}", region: "${gcpRegionMaster}", clusterName: "${clusterNameMaster}", namespace: "${namespaceMaster}")
           }
         }
       }
