@@ -74,7 +74,7 @@ pipeline {
           steps {
             checkout scm
             container('hugo') {
-              sh "hugo --baseURL ${baseUrl} --contentDir ${contentDir}"
+              sh "hugo --baseURL ${baseUrl} --source ${sourceDir}"
               stash name: "public", includes: "public/**"
             }
           }
