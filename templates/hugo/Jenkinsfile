@@ -73,10 +73,9 @@ pipeline {
         stage("Build site") {
           steps {
             checkout scm
+            dir("${sourceDir}")
             container('hugo') {
-              sh "pwd"
-              sh "ls"
-              sh "hugo --baseURL ${baseUrl} --source ${sourceDir}"
+              sh "hugo --baseURL ${baseUrl}"
               stash name: "public", includes: "public/**"
             }
           }
