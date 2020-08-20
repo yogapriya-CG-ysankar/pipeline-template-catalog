@@ -65,4 +65,3 @@ multibranch:
       credentialsId: ${githubCredentialId}
       repoOwner: ${repoOwner}
       repository: '${repo}'
-  markerFile: .hugo
