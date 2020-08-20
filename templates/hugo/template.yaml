@@ -17,6 +17,9 @@ parameters:
     displayName: GitHub Credential ID
     type: CREDENTIALS
     defaultValue: cbdays-github-token
+  - name: bucketName
+    type: string
+    displayName: GCP Storage Bucket
   - name: gcpProject
     type: string
     displayName: GCP Project
