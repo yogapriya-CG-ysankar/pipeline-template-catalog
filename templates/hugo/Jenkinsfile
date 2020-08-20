@@ -74,6 +74,8 @@ pipeline {
           steps {
             checkout scm
             container('hugo') {
+              sh "pwd"
+              sh "ls"
               sh "hugo --baseURL ${baseUrl} --source ${sourceDir}"
               stash name: "public", includes: "public/**"
             }
