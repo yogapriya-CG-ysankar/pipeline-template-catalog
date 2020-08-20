@@ -17,6 +17,12 @@ parameters:
     displayName: GitHub Credential ID
     type: CREDENTIALS
     defaultValue: cbdays-github-token
+  - name: baseUrl
+    type: string
+    displayName: Hugo hostname (and path) to the root, e.g. http://spf13.com/
+  - name: contentDir
+    type: string
+    displayName: Hugo filesystem path to content directory
   - name: bucketName
     type: string
     displayName: GCP Storage Bucket
