@@ -84,7 +84,7 @@ pipeline {
         }
         stage("Deploy") {
           steps {
-            gcpCloudStorageDeploy("${bucketName}") {
+            gcpCloudStorageDeploy("${bucketName}", "${bucketFolderName}") {
               unstash "public"
             }
           }
