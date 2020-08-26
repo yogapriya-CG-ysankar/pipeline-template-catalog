@@ -2,7 +2,12 @@ library 'pipeline-library@master'
 def hugoPodYaml = libraryResource 'podtemplates/hugo/pod.yml'
 def prNumber
 pipeline {
-  agent none
+  agent {
+    kubernetes {
+      label 'hugo-builder'
+      yaml hugoPodYaml
+    }
+  }
   options { 
     buildDiscarder(logRotator(numToKeepStr: '2'))
     skipDefaultCheckout true
@@ -16,15 +21,13 @@ pipeline {
     repo = "${repo}"
   }
   stages {
-    stage('Preview environment') {
-      agent {
-        kubernetes {
-          label 'hugo-builder'
-          yaml hugoPodYaml
-        }
+    stage("Checkout") {
+      steps {
+        checkout scm
       }
+    } 
+    stage('Preview environment') {
       when {
-        beforeAgent true
         allOf {
           not { triggeredBy 'EventTriggerCause' }
           branch 'pr-*'
@@ -33,7 +36,6 @@ pipeline {
       stages {
         stage("Build site") {
           steps {
-            checkout scm
             container('hugo') {
               sh "hugo"
               stash name: "public", includes: "public/**"
@@ -56,14 +58,7 @@ pipeline {
       }
     }
     stage('Master build & deploy') {
-      agent {
-        kubernetes {
-          label 'hugo-builder'
-          yaml hugoPodYaml
-        }
-      }
       when {
-        beforeAgent true
         allOf {
           not { triggeredBy 'EventTriggerCause' }
           branch 'cbci-updates'
@@ -73,7 +68,6 @@ pipeline {
       stages {
         stage("Build site") {
           steps {
-            checkout scm
             sh "git submodule update --init"
             dir("${sourceDir}") {
               container('hugo') {
