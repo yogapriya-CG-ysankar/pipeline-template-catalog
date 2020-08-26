@@ -26,9 +26,9 @@ parameters:
   - name: bucketName
     type: string
     displayName: GCP Storage Bucket
-    - name: bucketFolderName
-      type: string
-      displayName: GCP Storage Bucket Folder (optional)
+  - name: bucketFolderName
+    type: string
+    displayName: GCP Storage Bucket Folder (optional)
   - name: gcpProject
     type: string
     displayName: GCP Project
