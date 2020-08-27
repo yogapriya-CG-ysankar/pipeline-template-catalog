@@ -22,3 +22,9 @@ multibranch:
       credentialsId: ${githubCredentialId}
       repoOwner: ${repoOwner}
       repository: ${repository}
+      traits:
+        - $class: com.cloudbees.jenkins.plugins.github__reporting.config.ConfigTrait
+          handlers:
+            - $class: com.cloudbees.jenkins.plugins.github__reporting.handlers.Stage
+              verbosity: 
+                $class: com.cloudbees.jenkins.plugins.github_reporting.handlers.Stage$FailedStages
