@@ -17,16 +17,27 @@ parameters:
     defaultValue: cloudbees-ci-workshop-github-app
 multibranch:
   branchSource:
+    markerFile: pom.xml 
     github:
       id: simple-java-maven-app
       credentialsId: ${githubCredentialId}
       repoOwner: ${repoOwner}
       repository: ${repository}
       traits:
+        - gitHubBranchDiscovery:
+            strategyId: 1
+        - gitHubPullRequestDiscovery:
+            strategyId: 1
+        - gitHubForkDiscovery:
+            strategyId: 1
+            trust:
+              $class: TrustPermission
         - cloudBeesSCMReporting:
             handlers:
-            - "endBuildError"
+            - endBuildError:
+                maxLogLines: 120
+            - "warningsNG"
+            - "jacoco"
             - stage:
                 verbosity: "failed"
             - "junit"
-  markerFile: pom.xml 
