@@ -22,4 +22,11 @@ multibranch:
       credentialsId: ${githubCredentialId}
       repoOwner: ${repoOwner}
       repository: ${repository}
+      traits:
+        - cloudBeesSCMReporting:
+            handlers:
+            - "endBuildError"
+            - stage:
+                verbosity: "failed"
+            - "junit"
   markerFile: pom.xml 
