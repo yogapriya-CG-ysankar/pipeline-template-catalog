@@ -16,7 +16,7 @@ parameters:
     type: CREDENTIALS
     defaultValue: cloudbees-ci-workshop-github-app
 multibranch:
-  markerFile: bundle.yaml
+  markerFile: .markerfile
   branchSource:
     github:
       id: cloudbees-ci-config-bundle
