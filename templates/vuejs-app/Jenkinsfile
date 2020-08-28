@@ -1,4 +1,4 @@
-@Library('cb-days@master') _
+@Library('pipeline-library@master') _
 pipeline {
   agent none
   options { 
