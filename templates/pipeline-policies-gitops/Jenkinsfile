@@ -1,0 +1,58 @@
+pipeline {
+  agent none
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '2'))
+    skipDefaultCheckout true
+    timeout(time: 10, unit: 'MINUTES')
+  }
+  stages {
+    stage("GitHub: Create/Update") {
+      agent { label 'default-jnlp' }
+      when { 
+        beforeAgent true
+        triggeredBy "UserIdCause"
+        not { branch 'master' }
+      }
+      steps {
+        checkout scm
+        withCredentials([usernamePassword(credentialsId: 'admin-cli-token', usernameVariable: 'JENKINS_CLI_USR', passwordVariable: 'JENKINS_CLI_PSW')]) {
+          sh """
+            git checkout -B REPLACE_GITHUB_USERNAME-policy-patch
+            curl -O http://teams-REPLACE_GITHUB_USERNAME/teams-REPLACE_GITHUB_USERNAME/jnlpJars/jenkins-cli.jar
+            alias cli='java -jar jenkins-cli.jar -s http://teams-REPLACE_GITHUB_USERNAME/teams-REPLACE_GITHUB_USERNAME/ -auth $JENKINS_CLI_USR:$JENKINS_CLI_PSW'
+            cli policies > pipeline-policies.json
+            rm jenkins-cli.jar
+          """
+        }
+        withCredentials([usernamePassword(credentialsId: "${githubCredentialId}",
+                                          usernameVariable: 'GITHUB_APP',
+                                          passwordVariable: 'GITHUB_ACCESS_TOKEN')]) {
+          sh """
+            git config user.email "REPLACE_USER_EMAIL"
+            git config user.name "REPLACE_GITHUB_USERNAME"
+            git remote set-url origin https://x-access-token:${GITHUB_ACCESS_TOKEN}@github.com/${repoOwner}/${repository}.git                                  
+            git add . && git commit -am "create/update pipeline policies"   
+            git push -u origin REPLACE_GITHUB_USERNAME-policy-patch
+          """
+        }
+      }
+    }
+    stage("Controller: Create/Update") {
+      agent { label 'default-jnlp' }
+      when {
+        beforeAgent true
+        branch 'master'
+      }
+      steps {
+        checkout scm
+        withCredentials([usernamePassword(credentialsId: 'admin-cli-token', usernameVariable: 'JENKINS_CLI_USR', passwordVariable: 'JENKINS_CLI_PSW')]) {
+          sh """
+            curl -O http://teams-REPLACE_GITHUB_USERNAME/teams-REPLACE_GITHUB_USERNAME/jnlpJars/jenkins-cli.jar
+            alias cli='java -jar jenkins-cli.jar -s http://teams-REPLACE_GITHUB_USERNAME/teams-REPLACE_GITHUB_USERNAME/ -auth $JENKINS_CLI_USR:$JENKINS_CLI_PSW'
+            cli policies --put < pipeline-policies.json
+          """
+        }
+      }
+    }
+  }
+}
