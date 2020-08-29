@@ -7,6 +7,6 @@
       "repository":"pipeline-template-catalog"
     },
     "branchOrTag":"master",
-    "updateInterval":"28d"
+    "updateInterval":"15m"
   }
 ]
