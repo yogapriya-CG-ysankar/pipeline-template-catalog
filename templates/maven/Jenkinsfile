@@ -29,6 +29,7 @@ pipeline {
              qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
           recordIssues enabledForFailure: true, tools: [checkStyle(pattern: 'target/checkstyle-result.xml'),
             cpd(pattern: 'target/cpd.xml')]
+          gitHubBranchProtect(repoOwner, repository)
         }
       }
     }
