@@ -10,6 +10,7 @@ pipeline {
       steps {
         customYamlProps()
         echo "jdk from cloudbee-ci.yml: ${jdk}"
+        echo "line coverage from cloudbees-ci.yml: ${lineCoverage}"
         container ('maven') {
           sh 'mvn -V -q -e clean verify -Dmaven.test.failure.ignore'
         }
