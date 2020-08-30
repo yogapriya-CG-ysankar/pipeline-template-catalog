@@ -10,8 +10,10 @@ pipeline {
       agent { label 'default-jnlp' }
       when { 
         beforeAgent true
-        triggeredBy "UserIdCause"
-        not { branch 'master' }
+        anyOf {
+          triggeredBy 'UserIdCause'
+          triggeredBy 'BranchIndexingCause'
+        }
       }
       steps {
         checkout scm
@@ -47,6 +49,7 @@ pipeline {
       when {
         beforeAgent true
         branch 'master'
+        not { triggeredBy 'BranchIndexingCause' }
       }
       steps {
         checkout scm

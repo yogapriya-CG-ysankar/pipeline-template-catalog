@@ -1,19 +1,12 @@
-library 'pipeline-library@master'
-def mavenPodYaml = libraryResource 'podtemplates/maven/pod.yml'
+@Library('pipeline-library@master') _
 pipeline {
-  agent { 
-    kubernetes {
-      label 'maven-alpine-pod'
-      podRetention always()
-      idleMinutes 120
-      yaml mavenPodYaml
-     }
-  }
+  agent none
   options {
    timeout(time: 10, unit: 'MINUTES') 
   }
   stages {
     stage ('Build and Analysis') {
+      agent { label 'maven' }
       steps {
         container ('maven') {
           sh 'mvn -V -q -e clean verify -Dmaven.test.failure.ignore'
@@ -33,6 +26,7 @@ pipeline {
       }
     }
     stage ('Test') {
+      agent { label 'maven' }
       steps {
          container ('maven') {
            sh 'mvn -q test'
@@ -45,6 +39,7 @@ pipeline {
       }
     }
     stage ('Deliver') {
+      agent { label 'maven' }
       when {
         beforeAgent true
         branch 'master'
