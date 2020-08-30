@@ -16,7 +16,7 @@ parameters:
     type: CREDENTIALS
     defaultValue: cloudbees-ci-workshop-github-app
 multibranch:
-  markerFile: pom.xml 
+  markerFile: cloudbees-ci.yaml 
   branchSource:
     github:
       id: simple-java-maven-app
