@@ -8,6 +8,8 @@ pipeline {
     stage ('Build and Analysis') {
       agent { label 'maven' }
       steps {
+        customYamlProps()
+        echo "jdk from cloudbee-ci.yml: ${jdk}"
         container ('maven') {
           sh 'mvn -V -q -e clean verify -Dmaven.test.failure.ignore'
         }
