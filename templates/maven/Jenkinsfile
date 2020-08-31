@@ -8,8 +8,11 @@ pipeline {
     stage("Set GitHub Branch Protection") {
       agent { label 'default-jnlp' }
       when { 
-        beforeAgent true
-        triggeredBy 'BranchIndexingCause'
+        anyOf {
+          expression { BUILD_NUMBER == "1" }
+          expression { BUILD_NUMBER == "2" }
+        }
+        branch 'pr-*'
       }
       steps {
         gitHubBranchProtect(repoOwner, repository)
