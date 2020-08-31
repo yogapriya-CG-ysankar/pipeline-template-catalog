@@ -61,7 +61,7 @@ pipeline {
       when {
         allOf {
           not { triggeredBy 'EventTriggerCause' }
-          branch 'PR-52'
+          branch 'cbci-updates'
           changeset "${sourceDir}/**"
         }
       }
