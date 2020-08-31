@@ -62,7 +62,10 @@ pipeline {
         allOf {
           not { triggeredBy 'EventTriggerCause' }
           branch 'cbci-updates'
-          changeset "${sourceDir}/**"
+          anyOf {
+            changeset "${sourceDir}/**"
+            triggeredBy 'UserIdCause'
+          }
         }
       }
       stages {
