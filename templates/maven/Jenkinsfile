@@ -5,8 +5,25 @@ pipeline {
    timeout(time: 10, unit: 'MINUTES') 
   }
   stages {
+    stage("GitHub: Create/Update") {
+      agent { label 'default-jnlp' }
+      when { 
+        beforeAgent true
+        triggeredBy 'BranchIndexingCause'
+      }
+      steps {
+        gitHubBranchProtect(repoOwner, repository)
+      }
+    }
     stage ('Build and Analysis') {
       agent { label 'maven' }
+      when {
+        beforeAgent true
+        anyOf {
+          branch 'master'
+          branch 'pr-*'
+        }
+      }
       steps {
         customYamlProps()
         echo "jdk from cloudbee-ci.yml: ${jdk}"
@@ -29,12 +46,17 @@ pipeline {
              qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
           recordIssues enabledForFailure: true, tools: [checkStyle(pattern: 'target/checkstyle-result.xml'),
             cpd(pattern: 'target/cpd.xml')]
-          gitHubBranchProtect(repoOwner, repository)
         }
       }
     }
     stage ('Test') {
       agent { label 'maven' }
+      when {
+        anyOf {
+          branch 'master'
+          branch 'pr-*'
+        }
+      }
       steps {
          container ('maven') {
            sh 'mvn -q test'
