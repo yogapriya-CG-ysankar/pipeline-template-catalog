@@ -5,7 +5,7 @@ pipeline {
    timeout(time: 10, unit: 'MINUTES') 
   }
   stages {
-    stage("GitHub: Create/Update") {
+    stage("Set GitHub Branch Protection") {
       agent { label 'default-jnlp' }
       when { 
         beforeAgent true
@@ -36,7 +36,7 @@ pipeline {
         always {
           step([$class: 'JacocoPublisher', 
             changeBuildStatus: true,
-            minimumLineCoverage: '60',
+            minimumLineCoverage: '${lineCoverage}',
             runAlways: true
           ])
           recordIssues enabledForFailure: true,  tools: [java(), javaDoc()], aggregatingResults: 'true', id: 'java', name: 'Java'
