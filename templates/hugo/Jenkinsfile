@@ -9,7 +9,7 @@ pipeline {
     }
   }
   options { 
-    buildDiscarder(logRotator(numToKeepStr: '2'))
+    buildDiscarder(logRotator(numToKeepStr: '5'))
     skipDefaultCheckout true
     preserveStashes(buildCount: 2)
   }
