@@ -63,7 +63,7 @@ pipeline {
           not { triggeredBy 'EventTriggerCause' }
           branch 'cbci-updates'
           anyOf {
-            changeset "${sourceDir}/**"
+            changeset "${changesetDir}/**"
             triggeredBy 'UserIdCause'
           }
         }

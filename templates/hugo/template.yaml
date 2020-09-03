@@ -20,6 +20,9 @@ parameters:
   - name: baseUrl
     type: string
     displayName: Hugo hostname (and path) to the root, e.g. http://spf13.com/
+  - name: changesetDir
+    type: string
+    displayName: filesystem path to directory to check for changes to trigger build for site
   - name: config
     type: string
     displayName: config file (default is path/config.yaml|json|toml)
