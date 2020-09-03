@@ -74,7 +74,7 @@ pipeline {
             sh "git submodule update --init"
             dir("${sourceDir}") {
               container('hugo') {
-                sh "hugo --baseURL ${baseUrl}"
+                sh "hugo --baseURL ${baseUrl} --config ${config} --contentDir ${contentDir}"
                 stash name: "public", includes: "public/**"
               }
             }
