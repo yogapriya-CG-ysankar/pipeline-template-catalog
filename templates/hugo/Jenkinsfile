@@ -61,7 +61,7 @@ pipeline {
       when {
         allOf {
           not { triggeredBy 'EventTriggerCause' }
-          branch 'cbci-updates'
+          branch 'master'
           anyOf {
             changeset "${changesetDir}/**"
             triggeredBy 'UserIdCause'
