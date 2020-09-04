@@ -22,7 +22,7 @@ parameters:
   - name: deploymentDomain
     type: string
     displayName: Deployment Domain
-    defaultValue: cbws.io
+    defaultValue: workshop.labs.cb-sa.io
 multibranch:
   branchSource:
     github:
