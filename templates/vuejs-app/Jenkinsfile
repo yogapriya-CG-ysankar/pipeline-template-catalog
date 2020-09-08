@@ -13,33 +13,10 @@ pipeline {
   }
   stages('VueJS Test and Build')
   {
-    stage('VueJS Tests') {
-      agent {
-        label 'nodejs'
-      }
-      when {
-        beforeAgent true
-        branch 'PR-*'
-      }
-      steps {
-        checkout scm
-        container('nodejs') {
-          sh '''
-             yarn install
-             yarn test:unit
-             '''
-        }
-      } 
-      post {
-        always {
-          junit 'output/coverage/junit/junit.xml'
-        }
-      }
-    }
     stage('Build and Push Image') {
       when {
         beforeAgent true
-        anyOf { branch 'master'; branch 'development' }
+        anyOf { branch 'master'; branch 'development'; branch 'PR-*' }
       }
       steps { 
         yarnBuild() {
@@ -53,10 +30,10 @@ pipeline {
         }
       }
     }
-    stage('Deploy'){
+    stage('Deploy') {
       when {
         beforeAgent true
-        anyOf { branch 'master'; branch 'development' }
+        anyOf { branch 'master'; branch 'development'; branch 'PR-*' }
       }
       // options {
       //   timeout(time: 90, unit: 'SECONDS') 
