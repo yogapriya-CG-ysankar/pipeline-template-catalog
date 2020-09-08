@@ -42,11 +42,13 @@ pipeline {
         anyOf { branch 'master'; branch 'development' }
       }
       steps { 
+        yarnBuild() {
+          checkout scm
+          stash name: "k8s-deploy", includes: ".kubernetes/**"
+        }
         containerBuildPushGeneric("vuejs-app/${repoOwner}/${repository}", "latest", "${gcpProject}") {
           gitHubDeploy(repoOwner, repository, "http://development.${repoOwner}-${repository}.${deploymentDomain}")
-          checkout scm
           gitShortCommit()
-          stash name: "k8s-deploy", includes: ".kubernetes/**"
         }
       }
     }
