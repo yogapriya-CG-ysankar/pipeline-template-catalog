@@ -21,7 +21,6 @@ pipeline {
     repo = "${repo}"
     githubCredentialId = "${githubCredentialId}"
     credId = "${githubCredentialId}"
-    GITHUB_DEPLOYMENT_ID = ""
   }
   stages {
     stage("Checkout") {
