@@ -43,12 +43,12 @@ pipeline {
       }
       steps { 
         yarnBuild() {
+          gitHubDeploy(repoOwner, repository, "http://development.${repoOwner}-${repository}.${deploymentDomain}")
           checkout scm
           stash name: "k8s-deploy", includes: ".kubernetes/**"
         }
         containerBuildPushGeneric("vuejs-app/${repoOwner}/${repository}", "latest", "${gcpProject}") {
           unstash "app"
-          gitHubDeploy(repoOwner, repository, "http://development.${repoOwner}-${repository}.${deploymentDomain}")
           gitShortCommit()
         }
       }
