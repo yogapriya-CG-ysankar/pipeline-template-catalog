@@ -36,10 +36,12 @@ pipeline {
       }
       stages {
         stage("Build site") {
-          steps {
-            container('hugo') {
-              sh "hugo --config ${config} --contentDir ${contentDir}"
-              stash name: "public", includes: "public/**"
+          steps {sh "git submodule update --init"
+            dir("${sourceDir}") {
+              container('hugo') {
+                sh "hugo --config ${config} --contentDir ${contentDir}"
+                stash name: "public", includes: "public/**"
+              }
             }
           }
         }
