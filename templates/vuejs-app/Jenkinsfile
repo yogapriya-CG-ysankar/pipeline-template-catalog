@@ -47,6 +47,7 @@ pipeline {
           stash name: "k8s-deploy", includes: ".kubernetes/**"
         }
         containerBuildPushGeneric("vuejs-app/${repoOwner}/${repository}", "latest", "${gcpProject}") {
+          unstash "app"
           gitHubDeploy(repoOwner, repository, "http://development.${repoOwner}-${repository}.${deploymentDomain}")
           gitShortCommit()
         }
