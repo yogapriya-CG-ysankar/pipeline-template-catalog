@@ -20,6 +20,7 @@ pipeline {
     repoOwner = "${repoOwner}"
     repo = "${repo}"
     githubCredentialId = "${githubCredentialId}"
+    credId = "${githubCredentialId}"
   }
   stages {
     stage("Checkout") {
