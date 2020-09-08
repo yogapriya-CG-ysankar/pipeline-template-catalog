@@ -43,7 +43,7 @@ pipeline {
             dir("${sourceDir}") {
               container('hugo') {
                 sh "hugo --config ${config} --contentDir ${contentDir}"
-                stash name: "public", includes: "public/**"
+                stash name: "public", includes: "public/**,Dockerfile"
               }
             }
           }
