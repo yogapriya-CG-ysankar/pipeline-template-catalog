@@ -26,6 +26,7 @@ pipeline {
     stage("Checkout") {
       steps {
         checkout scm
+        gitShortCommit()
         gitHubDeploy(repoOwner, repo)
       }
     } 
