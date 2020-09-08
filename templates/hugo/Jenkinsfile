@@ -37,7 +37,7 @@ pipeline {
         stage("Build site") {
           steps {
             container('hugo') {
-              sh "hugo"
+              sh "hugo --config ${config} --contentDir ${contentDir}"
               stash name: "public", includes: "public/**"
             }
           }
