@@ -40,7 +40,7 @@ pipeline {
       stages {
         stage("Build site") {
           steps {
-            gitHubDeploy(repoOwner, repo, "", "labs preview", "${githubCredentialId}", "true", "false")
+            gitHubDeploy(repoOwner, repo, "", "${projectName} preview", "${githubCredentialId}", "true", "false")
             sh "git submodule update --init"
             dir("${sourceDir}") {
               container('hugo') {
