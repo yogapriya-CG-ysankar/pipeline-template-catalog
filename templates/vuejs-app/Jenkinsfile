@@ -10,6 +10,7 @@ pipeline {
   environment {
     repoOwner = "${repoOwner}"
     credId = "${githubCredentialId}"
+    GITHUB_DEPLOYMENT_ID = ""
   }
   stages('VueJS Test and Build')
   {
