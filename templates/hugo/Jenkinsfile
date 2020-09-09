@@ -67,7 +67,7 @@ pipeline {
       when {
         allOf {
           not { triggeredBy 'EventTriggerCause' }
-          branch 'master'
+          branch 'main'
           anyOf {
             changeset "${changesetDir}/**"
             triggeredBy 'UserIdCause'
@@ -105,7 +105,7 @@ pipeline {
       when {
         beforeAgent true
         allOf {
-          branch 'master'
+          branch 'main'
           triggeredBy 'EventTriggerCause' 
         }
       }
