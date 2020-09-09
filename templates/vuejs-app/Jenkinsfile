@@ -16,7 +16,7 @@ pipeline {
     stage('Build and Push Image') {
       when {
         beforeAgent true
-        anyOf { branch 'master'; branch 'development'; branch 'PR-*' }
+        anyOf { branch 'main'; branch 'development'; branch 'PR-*' }
       }
       steps { 
         yarnBuild() {
@@ -33,7 +33,7 @@ pipeline {
     stage('Deploy') {
       when {
         beforeAgent true
-        anyOf { branch 'master'; branch 'development'; branch 'PR-*' }
+        anyOf { branch 'main'; branch 'development'; branch 'PR-*' }
       }
       // options {
       //   timeout(time: 90, unit: 'SECONDS') 
