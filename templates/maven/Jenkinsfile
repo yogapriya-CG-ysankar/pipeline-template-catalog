@@ -24,7 +24,7 @@ pipeline {
           when {
             beforeAgent true
             anyOf {
-              branch 'master'
+              branch 'main'
               branch 'pr-*'
             }
           }
@@ -56,7 +56,7 @@ pipeline {
         stage ('Test') {
           when {
             anyOf {
-              branch 'master'
+              branch 'main'
               branch 'pr-*'
             }
           }
@@ -74,7 +74,7 @@ pipeline {
         stage ('Deliver') {
           when {
             beforeAgent true
-            branch 'master'
+            branch 'main'
           }
           steps {
             container ('maven') {
