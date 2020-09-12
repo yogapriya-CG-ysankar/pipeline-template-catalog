@@ -1,3 +1,4 @@
+@Library('pipeline-library@master') _
 pipeline {
   agent none
   options {
@@ -17,6 +18,7 @@ pipeline {
             alias cli='java -jar jenkins-cli.jar -s http://teams-REPLACE_CONTROLLER_NAME/teams-REPLACE_CONTROLLER_NAME/ -auth $JENKINS_CLI_USR:$JENKINS_CLI_PSW'
             cli pipeline-template-catalogs --put < create-pipeline-template-catalog.json
           """
+          pipelineCatalogLabCleanup('REPLACE_GITHUB_ORG')
         }
       }
     }
