@@ -14,6 +14,7 @@ pipeline {
   stages('VueJS Test and Build')
   {
     stage('Build and Push Image') {
+      agent { label 'default-jnlp' }
       when {
         beforeAgent true
         anyOf { branch 'main'; branch 'development'; branch 'PR-*' }
@@ -27,6 +28,12 @@ pipeline {
         }
         containerBuildPushGeneric("vuejs-app/${repoOwner}/${repository}", "latest", "${gcpProject}") {
           unstash "app"
+        }
+      }
+      post {
+        always {
+          unstash "output"
+          recordIssues enabledForFailure: true, aggregatingResults: true, tool: junitParser(pattern: 'output/coverage/junit/junit.xml')
         }
       }
     }
