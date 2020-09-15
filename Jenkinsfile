@@ -9,6 +9,7 @@ pipeline {
       agent { label 'default-jnlp' } 
       when {
         branch 'master'
+        not { triggeredBy 'BranchIndexingCause' }
       }
       steps {
         withCredentials([usernamePassword(credentialsId: 'admin-cli-token', usernameVariable: 'JENKINS_CLI_USR', passwordVariable: 'JENKINS_CLI_PSW')]) {
