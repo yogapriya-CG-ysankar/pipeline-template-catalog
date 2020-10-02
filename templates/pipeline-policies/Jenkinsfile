@@ -48,7 +48,7 @@ pipeline {
       agent { label 'default-jnlp' }
       when {
         beforeAgent true
-        branch 'master'
+        branch 'main'
         not { triggeredBy 'BranchIndexingCause' }
       }
       steps {
