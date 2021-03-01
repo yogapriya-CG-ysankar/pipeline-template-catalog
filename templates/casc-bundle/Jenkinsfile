@@ -11,6 +11,7 @@ pipeline {
       when {
         beforeAgent true
         branch 'master'
+        not { triggeredBy 'UserIdCause' }
       }
       steps {
         configBundleUpdate()
