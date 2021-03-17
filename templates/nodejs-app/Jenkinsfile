@@ -55,7 +55,7 @@ pipeline {
     stage('Build and Push Image') {
       when {
         beforeAgent true
-        branch 'master'
+        branch 'main'
       }
       steps {  
         echo "${repoOwner}"
@@ -72,7 +72,7 @@ pipeline {
     stage('Deploy') {
       when {
         beforeAgent true
-        branch 'master'
+        branch 'main'
       }
       options {
         timeout(time: 90, unit: 'SECONDS') 
