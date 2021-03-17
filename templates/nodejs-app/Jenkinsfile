@@ -61,6 +61,7 @@ pipeline {
         echo "${repoOwner}"
         containerBuildPushGeneric("helloworld-nodejs", "${repoOwner.toLowerCase()}-${env.BUILD_NUMBER}", "${gcpProject}") {
           checkout scm
+          gitShortCommit()
         }
       }
       post {
