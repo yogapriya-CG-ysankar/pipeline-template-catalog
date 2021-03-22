@@ -31,6 +31,7 @@ pipeline {
             defineProps('.nodejs-app', [npmPackages: 'express pug'])            
             container('nodejs') {
               sh """
+                pkill node
                 npm i -S ${npmPackages}
                 node ./hello.js &
               """
