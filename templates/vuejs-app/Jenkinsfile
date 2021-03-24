@@ -33,7 +33,6 @@ pipeline {
       }
     }
     stage('Deploy') {
-      agent none
       when {
         beforeAgent true
         anyOf { branch 'main'; branch 'development'; branch 'PR-*' }
