@@ -29,12 +29,7 @@ pipeline {
         containerBuildPushGeneric("vuejs-app/${repoOwner}/${repository}", "latest", "${gcpProject}") {
           unstash "app"
         }
-      }
-      post {
-        always {
-          unstash "output"
-          recordIssues enabledForFailure: true, aggregatingResults: true, tool: junitParser(pattern: 'output/coverage/junit/junit.xml')
-        }
+        recordIssues enabledForFailure: true, aggregatingResults: true, tool: junitParser(pattern: 'output/coverage/junit/junit.xml')
       }
     }
     stage('Deploy') {
