@@ -19,6 +19,7 @@ pipeline {
         anyOf { branch 'main'; branch 'development'; branch 'PR-*' }
       }
       steps { 
+        echo "preparing yarn build"
         yarnBuild() {
           checkout scm
           gitShortCommit()
