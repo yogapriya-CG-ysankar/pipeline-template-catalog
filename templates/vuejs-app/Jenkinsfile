@@ -1,6 +1,6 @@
 @Library('pipeline-library@master') _
 pipeline {
-  agent none
+  agent { label 'default-jnlp' }
   options { 
     buildDiscarder(logRotator(numToKeepStr: '2'))
     skipDefaultCheckout true
@@ -14,7 +14,6 @@ pipeline {
   stages('VueJS Test and Build')
   {
     stage('Build and Push Image') {
-      agent { label 'default-jnlp' }
       when {
         beforeAgent true
         anyOf { branch 'main'; branch 'development'; branch 'PR-*' }
@@ -33,6 +32,7 @@ pipeline {
       }
     }
     stage('Deploy') {
+      agent none
       when {
         beforeAgent true
         anyOf { branch 'main'; branch 'development'; branch 'PR-*' }
