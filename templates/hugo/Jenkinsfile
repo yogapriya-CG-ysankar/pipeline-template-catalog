@@ -34,7 +34,10 @@ pipeline {
         allOf {
           not { triggeredBy 'EventTriggerCause' }
           branch 'pr-*'
-          changeset "${changesetDir}/**"
+          anyOf {
+            changeset "${changesetDir}/**"
+            triggeredBy 'UserIdCause'
+          }
         }
       }
       stages {
