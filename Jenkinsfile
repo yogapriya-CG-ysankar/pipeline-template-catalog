@@ -1,4 +1,4 @@
-@Library('pipeline-library@master') _
+library 'pipeline-library'
 pipeline {
   agent none
   options {
@@ -9,7 +9,7 @@ pipeline {
     stage("Import Catalog") {
       agent { label 'default-jnlp' } 
       when {
-        branch 'master'
+        branch 'main'
       }
       steps {
         withCredentials([usernamePassword(credentialsId: 'admin-cli-token', usernameVariable: 'JENKINS_CLI_USR', passwordVariable: 'JENKINS_CLI_PSW')]) {
