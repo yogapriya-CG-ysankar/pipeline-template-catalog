@@ -10,7 +10,7 @@ pipeline {
     stage('Update Config Bundle') {
       when {
         beforeAgent true
-        branch 'master'
+        branch 'main'
         not { triggeredBy 'UserIdCause' }
       }
       steps {
