@@ -6,7 +6,7 @@
       "repoOwner":"REPLACE_GITHUB_ORG",
       "repository":"pipeline-template-catalog"
     },
-    "branchOrTag":"master",
+    "branchOrTag":"main",
     "updateInterval":"15m"
   }
 ]
