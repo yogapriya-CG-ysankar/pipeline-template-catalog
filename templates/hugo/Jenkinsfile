@@ -1,4 +1,4 @@
-library 'pipeline-library@master'
+library 'pipeline-library'
 def hugoPodYaml = libraryResource 'podtemplates/hugo/pod.yml'
 def prNumber
 pipeline {
