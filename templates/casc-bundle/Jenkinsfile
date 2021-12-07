@@ -3,7 +3,7 @@ pipeline {
   agent none
   options {
     buildDiscarder(logRotator(numToKeepStr: '2'))
-    timeout(time: 50, unit: 'MINUTES')
+    timeout(time: 60, unit: 'MINUTES')
   }
   stages {
     stage('Update Config Bundle') {
