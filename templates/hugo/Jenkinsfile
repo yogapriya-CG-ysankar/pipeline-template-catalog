@@ -12,6 +12,7 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '5'))
     skipDefaultCheckout true
     preserveStashes(buildCount: 2)
+    disableConcurrentBuilds(abortPrevious: true)
   }
   triggers {
     eventTrigger jmespathQuery("action=='closed' && repository.full_name=='${repoOwner}/${repo}'")
