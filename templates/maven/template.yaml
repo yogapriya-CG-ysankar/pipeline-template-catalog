@@ -32,12 +32,3 @@ multibranch:
             strategyId: 1
             trust:
               $class: TrustPermission
-        - cloudBeesSCMReporting:
-            handlers:
-            - endBuildError:
-                maxLogLines: 120
-            - "warningsNG"
-            - "jacoco"
-            - stage:
-                verbosity: "failed"
-            - "junit"
