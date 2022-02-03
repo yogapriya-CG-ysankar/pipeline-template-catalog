@@ -1,0 +1,27 @@
+version: 1
+type: pipeline-template
+name: Container Build and Deploy
+templateType: MULTIBRANCH
+description: Builds a top-level Dockerfile is specified repository and deploys it using helm. 
+parameters:
+  - name: repoOwner
+    type: string
+    displayName: Repository Owner
+  - name: repository
+    type: string
+    displayName: Repository
+  - name: githubCredentialId
+    displayName: GitHub Credential ID
+    type: CREDENTIALS
+    defaultValue: cbdays-github-token
+multibranch:
+  branchSource:
+    github:
+      id: container-image-build-deploy
+      credentialsId: ${githubCredentialId}
+      repoOwner: ${repoOwner}
+      repository: ${repository}
+      traits:
+        - gitHubPullRequestDiscovery:
+            strategyId: 2
+  markerFile: Dockerfile
