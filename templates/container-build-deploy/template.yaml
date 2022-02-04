@@ -7,13 +7,15 @@ parameters:
   - name: repoOwner
     type: string
     displayName: Repository Owner
+    defaultValue: REPLACE_GITHUB_ORG
   - name: repository
     type: string
     displayName: Repository
+    defaultValue: insurance-frontend
   - name: githubCredentialId
     displayName: GitHub Credential ID
     type: CREDENTIALS
-    defaultValue: cbdays-github-token
+    defaultValue: cloudbees-ci-pipeline-workshop-github-app
 multibranch:
   branchSource:
     github:
