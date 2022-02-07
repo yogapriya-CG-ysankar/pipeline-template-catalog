@@ -8,35 +8,37 @@ pipeline {
     timeout(time: 10, unit: 'MINUTES')
   }
   environment {
-    repoOwner = "${repoOwner}"
-    repo = "${repository}"
-    containerRegistry = "${containerRegistry}"
-    githubCredentialId = "${githubCredentialId}"
+    REPO_OWNER = "${repoOwner}"
+    REPO_NAME = "${repository}"
+    GITHUB_CREDENTIAL_ID = "${githubCredentialId}"
   }
   stages {
-    stage('Build and Push Container Image') {
+    stage('Staging PR') {
       when {
         beforeAgent true
         branch 'pr-*'
       }
-      steps {  
-        echo "${repoOwner}"
-        containerBuildPushGeneric(repo, "${containerRegistry}") {
-          checkout scm
-          gitShortCommit()
-          stash name: "chart", includes: "chart/**"
+      environment {
+        DEPLOYMENT_ENV = "staging"
+      }
+      stages {
+        stage('Build and Push Container Image') {
+          steps {  
+            echo "building and pushing container image for ${REPO_OWNER}/${REPO_NAME}"
+            containerBuildPushGeneric(REPO_NAME) {
+              checkout scm
+              gitShortCommit()
+              stash name: "chart", includes: "chart/**"
+            }
+          }
         }
-      }
-    }
-    stage('Deploy: Staging') {
-      when {
-        beforeAgent true
-        branch 'pr-*'
-      }
-      steps {  
-        echo "begin deploy"
-        helmDeploy(repoOwner, env.SHORT_COMMIT) {
-          unstash "chart"
+        stage('Deploy: Staging') {
+          steps {  
+            echo "begin deploy"
+            helmDeploy(REPO_OWNER, env.SHORT_COMMIT) {
+              unstash "chart"
+            }
+          }
         }
       }
     }
