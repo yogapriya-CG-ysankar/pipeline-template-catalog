@@ -34,7 +34,7 @@ pipeline {
         }
         stage('Deploy: Staging') {
           steps {  
-            echo "begin deploy"
+            echo "deploying commit $SHORT_COMMIT for ${REPO_OWNER}/${REPO_NAME}"
             helmDeploy(REPO_OWNER, env.SHORT_COMMIT) {
               unstash "chart"
             }
