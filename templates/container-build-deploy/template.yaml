@@ -2,7 +2,7 @@ version: 1
 type: pipeline-template
 name: Container Build and Deploy
 templateType: MULTIBRANCH
-description: Builds a top-level Dockerfile is specified repository and deploys it using helm. 
+description: Builds a top-level Dockerfile from the specified repository and deploys it using a Helm chart from the same repository.
 parameters:
   - name: repoOwner
     type: string
