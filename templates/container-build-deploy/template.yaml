@@ -24,6 +24,8 @@ multibranch:
       repoOwner: ${repoOwner}
       repository: ${repository}
       traits:
+        - gitHubBranchDiscovery:
+            strategyId: 1
         - gitHubPullRequestDiscovery:
-            strategyId: 2
+            strategyId: 1
   markerFile: Dockerfile
