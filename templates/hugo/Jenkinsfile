@@ -109,10 +109,7 @@ pipeline {
       }
       when {
         beforeAgent true
-        allOf {
-          branch 'main'
-          triggeredBy 'EventTriggerCause' 
-        }
+        triggeredBy 'EventTriggerCause' 
       }
       steps {
         script {
