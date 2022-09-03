@@ -32,6 +32,8 @@ multibranch:
             strategyId: 1
             trust:
               $class: TrustPermission
+        - headWildcardFilter:
+            includes: main
         - cloudBeesSCMReporting:
             handlers:
             - endBuildError:
