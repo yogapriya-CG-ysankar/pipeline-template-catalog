@@ -43,10 +43,3 @@ multibranch:
             - stage:
                 verbosity: "failed"
             - "junit"
-    strategy:
-      allBranchesSame:
-        props:
-        - suppressAutomaticTriggering:
-            triggeredBranchesRegex: .*
-            strategy: INDEXING
-
