@@ -1,0 +1,30 @@
+library 'pipeline-library'
+pipeline {
+  agent none
+  options { 
+    buildDiscarder(logRotator(numToKeepStr: '2'))
+    preserveStashes(buildCount: 2)    
+    skipDefaultCheckout true
+    timeout(time: 10, unit: 'MINUTES')
+  }
+  environment {
+    REPO_OWNER = "${repoOwner}"
+    REPO_NAME = "${repository}"
+    GITHUB_CREDENTIAL_ID = "${githubCredentialId}"
+  }
+  stages {
+    stage('Build and Push Container Image') {
+      when {
+        beforeAgent true
+        branch 'pr-*'
+      }
+      steps {  
+        echo "building and pushing container image for ${REPO_OWNER}/${REPO_NAME}"
+        containerBuildPushGeneric(REPO_NAME) {
+          checkout scm
+          gitShortCommit()
+        }
+      }
+    }
+  }
+}
