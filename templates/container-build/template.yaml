@@ -15,7 +15,7 @@ parameters:
   - name: githubCredentialId
     displayName: GitHub Credential ID
     type: CREDENTIALS
-    defaultValue: cloudbees-ci-previews-demo-github-app
+    defaultValue: cloudbees-ci-workshop-github-app
   - name: baseImageName
     type: string
     displayName: Base Image Name
