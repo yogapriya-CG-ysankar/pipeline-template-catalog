@@ -23,7 +23,7 @@ parameters:
 multibranch:
   branchSource:
     github:
-      id: container-image-build-deploy
+      id: container-image-build
       credentialsId: ${githubCredentialId}
       repoOwner: ${repoOwner}
       repository: ${repository}
