@@ -31,5 +31,5 @@ multibranch:
         - gitHubBranchDiscovery:
             strategyId: 1
         - gitHubPullRequestDiscovery:
-            strategyId: 1
+            strategyId: 2
   markerFile: Dockerfile
